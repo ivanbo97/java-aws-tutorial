@@ -1,7 +1,6 @@
 package org.example;
 
 
-import org.example.util.AwsCustomPolicies;
 import org.example.util.AwsService;
 import software.amazon.awssdk.services.iam.IamClient;
 import software.amazon.awssdk.services.iam.model.AttachUserPolicyRequest;
@@ -11,7 +10,7 @@ import software.amazon.awssdk.services.iam.model.IamException;
 import java.io.IOException;
 import java.util.Optional;
 
-import static java.lang.String.format;
+import static org.example.util.AwsCustomPolicies.getMyOwnPolicyArn;
 
 public class AwsUserPolicyManager extends AwsService {
     public static void main(String[] args) throws IOException {
@@ -28,9 +27,9 @@ public class AwsUserPolicyManager extends AwsService {
         }
     }
 
-    private static void attachPolicyToUser(IamClient iamCLient, String username) {
-        AttachUserPolicyRequest attachUserPolicyRequest = AttachUserPolicyRequest.builder().userName("JavaMaster").policyArn(AwsCustomPolicies.MY_OWN_POLICY_ARN).build();
+    private static void attachPolicyToUser(IamClient iamCLient, String username) throws IOException {
+        AttachUserPolicyRequest attachUserPolicyRequest = AttachUserPolicyRequest.builder().userName("JavaMaster").policyArn(getMyOwnPolicyArn()).build();
         AttachUserPolicyResponse attachUserPolicyResponse = iamCLient.attachUserPolicy(attachUserPolicyRequest);
-        System.out.println(format("Policy attached to user %s successfully! ", username));
+        System.out.printf("Policy attached to user %s successfully! %n", username);
     }
 }
