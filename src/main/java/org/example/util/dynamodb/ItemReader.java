@@ -80,7 +80,7 @@ public class ItemReader extends AwsService {
                     ":userId",
                     AttributeValue.builder().s("user321").build(),
                     ":ageLimit",
-                    AttributeValue.builder().n("25").build()))
+                    AttributeValue.builder().n("26").build()))
             .build();
     QueryResponse response = dynamoDbClient.query(queryRequest);
     logger.info("Results of Query based on conditions:");
