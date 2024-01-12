@@ -23,6 +23,11 @@ public class ItemReader extends AwsService {
   private static final DynamoDbClient dynamoDbClient = DynamoDbClient.builder().build();
 
   private static void logQueryResponse(List<Map<String, AttributeValue>> returnedItems) {
+    if (returnedItems.isEmpty()) {
+      logger.info("Query returned 0 results");
+      return;
+    }
+
     logger.info("Query Result:");
     returnedItems.forEach(item -> logger.info(item.toString()));
   }
@@ -32,6 +37,7 @@ public class ItemReader extends AwsService {
       awsEnvSetup();
       useQueryOperation();
       useGetOperation();
+      getItemByAgeCondition();
     } catch (DynamoDbException ex) {
       logger.severe(ex.getMessage());
       ex.printStackTrace();
@@ -61,5 +67,23 @@ public class ItemReader extends AwsService {
             .build();
     GetItemResponse getItemResponse = dynamoDbClient.getItem(getItemRequest);
     logger.info("Get Operation Result:\n" + getItemResponse.item().toString());
+  }
+
+  private static void getItemByAgeCondition() {
+    QueryRequest queryRequest =
+        QueryRequest.builder()
+            .tableName("UserTable")
+            .keyConditionExpression("UserID = :userId")
+            .filterExpression("Age > :ageLimit")
+            .expressionAttributeValues(
+                Map.of(
+                    ":userId",
+                    AttributeValue.builder().s("user321").build(),
+                    ":ageLimit",
+                    AttributeValue.builder().n("25").build()))
+            .build();
+    QueryResponse response = dynamoDbClient.query(queryRequest);
+    logger.info("Results of Query based on conditions:");
+    logQueryResponse(response.items());
   }
 }
