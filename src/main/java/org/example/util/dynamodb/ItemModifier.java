@@ -10,7 +10,7 @@ import software.amazon.awssdk.services.dynamodb.model.UpdateItemRequest;
 
 public class ItemModifier extends AwsService {
 
-  private static final Logger logger = Logger.getLogger(ItemReader.class.getName());
+  private static final Logger logger = Logger.getLogger(ItemModifier.class.getName());
 
   public static void main(String[] args) throws IOException {
     awsEnvSetup();

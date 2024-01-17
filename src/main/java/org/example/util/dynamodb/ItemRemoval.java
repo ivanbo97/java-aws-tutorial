@@ -9,7 +9,7 @@ import software.amazon.awssdk.services.dynamodb.model.*;
 
 public class ItemRemoval extends AwsService {
 
-  private static final Logger logger = Logger.getLogger(ItemInserter.class.getName());
+  private static final Logger logger = Logger.getLogger(ItemRemoval.class.getName());
 
   public static void main(String[] args) throws IOException {
     awsEnvSetup();
